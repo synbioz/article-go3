@@ -1,0 +1,65 @@
+html
+  head
+    title Quarto board
+    css:
+      table {
+        background: rgb(255, 211, 155);
+        border: 0px;
+        border-collapse: collapse;
+      }
+
+      table td {
+        border: 1px dashed black;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      ul li {
+        display: inline-block;
+        padding: 2px;
+      }
+
+      ul li.place-me {
+        background: rgb(123, 204, 120);
+        border: 1px solid black;
+      }
+
+      ul li.selected-piece {
+        border: 1px dashed black;
+      }
+
+    script src='http://code.jquery.com/jquery-1.10.1.min.js'
+    script src='/js/quarto.js'
+  body
+    h1 Quarto board
+    h2.result
+      - if @room.won == :player
+        | You win
+      - if @room.won == :computer
+        | You loose
+
+    table#board
+      - board = @room.game.board
+      - for i in (0...4)
+        tr
+          - for j in (0...4)
+            - piece = board.get(i, j)
+            td data-i=i data-j=j
+              img src="/img/#{piece.image_name}.png"
+
+    ul#stash
+      - @room.game.stash.each_with_index do |piece, idx|
+        li class=(idx == @room.selected_piece ? 'place-me' : piece.empty? ? ''  : 'choose-me')
+          img src="/img/#{piece.image_name}.png" data-k=idx
+
+    - if @room.won == false
+      form method='post'
+        input type='hidden' name='i'
+        input type='hidden' name='j'
+        input type='hidden' name='k'
+        input type='submit' value='Confirm'
+    - else
+      a href='/' Go back
