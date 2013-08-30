@@ -4,14 +4,16 @@ $(function() {
   var $form   = $('form')
 
   $board.on('click', 'td', function() {
-    $board.find('img.placed-piece').remove()
-
-    var $img = $stash.find('li.place-me img').first();
-    var $td  = $(this);
+    var $old_td = $board.find('img.placed-piece').closest('td')
+    var $img    = $stash.find('li.place-me img').first();
+    var $td     = $(this);
 
     $content = $img.clone();
     $content.addClass('placed-piece');
 
+    if ($old_td.length) $old_td.html($old_td.data('old-content'));
+
+    $td.data('old-content', $td.html());
     $td.html($content)
   });
 
