@@ -3,7 +3,7 @@ $(function() {
   var $stash  = $('ul#stash');
   var $form   = $('form')
 
-  $board.on('click', 'td', function() {
+  $board.on('click', 'td.empty', function() {
     var $old_td = $board.find('img.placed-piece').closest('td')
     var $img    = $stash.find('li.place-me img').first();
     var $td     = $(this);
@@ -41,5 +41,15 @@ $(function() {
     $form.find('input[name="i"]').val(i);
     $form.find('input[name="j"]').val(j);
     $form.find('input[name="k"]').val(k);
+  });
+
+  $form.on('click', 'input#autoplay', function(e) {
+    $choices  = $stash.find('li.choose-me');
+    $selected = $($choices[ Math.floor(Math.random() * $choices.length) ]);
+    $selected.click();
+
+    $choices  = $board.find('td.empty');
+    $selected = $($choices[ Math.floor(Math.random() * $choices.length) ]);
+    $selected.click();
   });
 });

@@ -12,6 +12,10 @@ class Room
     @game.apply_move(selected_piece, move)
     self.selected_piece = move.piece_index
   end
+
+  def valid_move?(move)
+    !@game.stash[move.piece_index].empty?
+  end
 end
 
 class Building < Hash

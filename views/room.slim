@@ -47,7 +47,7 @@ html
         tr
           - for j in (0...4)
             - piece = board.get(i, j)
-            td data-i=i data-j=j
+            td data-i=i data-j=j class="#{'empty' if piece.empty?}"
               img src="/img/#{piece.image_name}.png"
 
     ul#stash
@@ -61,5 +61,7 @@ html
         input type='hidden' name='j'
         input type='hidden' name='k'
         input type='submit' value='Confirm'
+
+        input#autoplay type='submit' value='Autoplay'
     - else
       a href='/' Go back

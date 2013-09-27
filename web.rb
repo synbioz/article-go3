@@ -34,22 +34,25 @@ post '/room/:key' do
     params[:i].to_i,
     params[:j].to_i,
     params[:k].to_i )
-  @room.apply_move(move)
 
-  # Ask the server for an opponent move and apply it
-  msg      = Comm.build_message(@room.game, @room.selected_piece)
-  response = Comm.send_message('localhost', 1234, msg)
+  if @room.valid_move?(move)
+    @room.apply_move(move)
 
-  case response.shift
-  when 0
-    @room.won = :player
-  when 1
-    move = Move.new(*response)
-    @room.apply_move(move)
-  when 2
-    move = Move.new(*response)
-    @room.apply_move(move)
-    @room.won = :computer
+    # Ask the server for an opponent move and apply it
+    msg      = Comm.build_message(@room.game, @room.selected_piece)
+    response = Comm.send_message('localhost', 1234, msg)
+
+    case response.shift
+    when 0
+      @room.won = :player
+    when 1
+      move = Move.new(*response)
+      @room.apply_move(move)
+    when 2
+      move = Move.new(*response)
+      @room.apply_move(move)
+      @room.won = :computer
+    end
   end
 
   slim :room
