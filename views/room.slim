@@ -40,6 +40,8 @@ html
         | You win
       - if @room.won == :computer
         | You loose
+      - if @room.won == :nobody
+        | Tie
 
     table#board
       - board = @room.game.board

@@ -48,6 +48,7 @@ post '/room/:key' do
     when 1
       move = Move.new(*response)
       @room.apply_move(move)
+      @room.won = :nobody if @room.game.stash[move.piece_index].empty?
     when 2
       move = Move.new(*response)
       @room.apply_move(move)

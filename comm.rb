@@ -7,11 +7,19 @@ module Comm
     numbers.pack('C*')
   end
 
-  def self.send_message(server, port, message)
-    s = TCPSocket.new(server, port)
-    s.sendmsg(message)
-    binary, _ = s.recvmsg
-    s.close
-    binary.unpack('C*')
+  def self.send_message(server, port, message, retry_count=0)
+    begin
+      s = TCPSocket.new(server, port)
+      s.sendmsg(message)
+      binary, _ = s.recvmsg
+      s.close
+      binary.unpack('C*')
+    rescue
+      if retry_count > 2
+        raise $!
+      else
+        send_message(server, port, message, retry_count + 1)
+      end
+    end
   end
 end
