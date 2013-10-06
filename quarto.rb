@@ -87,7 +87,6 @@ class Game
   end
 
   def to_repr
-    { 'Board' => @board.to_repr,
-      'Stash' => @stash.to_repr }
+    @board.to_repr + @stash.to_repr
   end
 end
