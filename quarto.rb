@@ -37,15 +37,6 @@ class Board
     @repr[i][j] = piece
   end
 
-  # The representation is an Array of Array of Integer we need
-  # an Array of Array of Piece
-  def self.from_repr(repr)
-    obj  = allocate
-    repr = repr.map { |line| line.map { |int| Piece.new(int) }  }
-    obj.instance_variable_set(:'@repr', repr)
-    obj
-  end
-
   def to_repr
     @repr.map { |line| line.map { |piece| piece.to_repr }  }
   end
@@ -67,12 +58,6 @@ class Stash < Array
     piece = self[index]
     self[index] = Piece.empty
     piece
-  end
-
-  def self.from_repr(repr)
-    obj = new
-    repr.each { |int| obj << Piece.new(int) }
-    obj
   end
 end
 
@@ -99,15 +84,6 @@ class Game
   def apply_move(piece_index, move)
     piece = @stash.delete_at(piece_index)
     @board.set(move.i, move.j, piece)
-  end
-
-  # The representation is an object containing a key for the board
-  # and a key for the stash.
-  def self.from_repr(repr)
-    obj = new
-    obj.instance_variable_set(:'@board', Board.from_repr(repr['board']))
-    obj.instance_variable_set(:'@stash', Stash.from_repr(repr['stash']))
-    obj
   end
 
   def to_repr
