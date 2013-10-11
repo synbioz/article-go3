@@ -67,3 +67,6 @@ html
         input#autoplay type='submit' value='Autoplay'
     - else
       a href='/' Go back
+
+    - if @bm
+      pre Played in #{@bm} millisec.

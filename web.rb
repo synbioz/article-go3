@@ -39,8 +39,8 @@ post '/room/:key' do
     @room.apply_move(move)
 
     # Ask the server for an opponent move and apply it
-    msg      = Comm.build_message(@room.game, @room.selected_piece)
-    response = Comm.send_message('localhost', 1234, msg)
+    msg           = Comm.build_message(@room.game, @room.selected_piece)
+    response, @bm = Comm.send_message('localhost', 1234, msg)
 
     case response.shift
     when 0
